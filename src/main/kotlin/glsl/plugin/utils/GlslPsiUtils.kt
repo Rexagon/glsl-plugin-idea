@@ -23,10 +23,36 @@ object GlslPsiUtils : GeneratedParserUtilBase() {
 
     @JvmStatic
     fun ppText(builder: PsiBuilder, level: Int): Boolean {
-        while (builder.tokenType != GlslTypes.PP_END) {
+        while (!builder.eof() && builder.tokenType != GlslTypes.PP_END) {
             builder.advanceLexer()
         }
         return builder.tokenType == GlslTypes.PP_END
+    }
+
+    @JvmStatic
+    fun ppArg(builder: PsiBuilder, level: Int): Boolean {
+        var innerLevel = 0
+        while (!builder.eof()) {
+            when (builder.tokenType) {
+                GlslTypes.COMMA ->
+                    if (innerLevel == 0) {
+                        return true
+                    }
+
+                GlslTypes.LEFT_PAREN ->
+                    innerLevel += 1
+
+                GlslTypes.RIGHT_PAREN -> {
+                    if (innerLevel == 0) {
+                        return true
+                    }
+                    innerLevel -= 1
+                }
+            }
+
+            builder.advanceLexer()
+        }
+        return innerLevel == 0
     }
 
     /**

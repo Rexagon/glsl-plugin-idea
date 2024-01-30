@@ -527,7 +527,7 @@
         INTCONSTANT="regexp:0x[\da-fA-F]+|\d+"
         BOOLCONSTANT="regexp:false|true"
         STRING_LITERAL="regexp:(\"([^\"\\]|\[.])*\")"
-        IDENTIFIER="regexp:[a-zA-Z_]+\w*(##\w*[a-zA-Z_]+\w*)*"
+        IDENTIFIER="regexp:[a-zA-Z_]+\w*"
     ]
 }
 
@@ -1233,13 +1233,8 @@ private pp_function_call_header_no_parameters
 private pp_recover_function_call_header_with_parameters ::= !(RIGHT_PAREN)
 
 private pp_function_call_header_with_parameters
-    ::= pp_function_call_header pp_function_arg (COMMA pp_function_arg)*
+    ::= pp_function_call_header <<ppArg>> (COMMA <<ppArg>>)*
     {   recoverWhile=pp_recover_function_call_header_with_parameters   }
-
-private pp_function_arg
-    ::= expr_no_assignment
-    |   type_specifier
-    |   LEFT_BRACE struct_declaration_list RIGHT_BRACE
 
 private pp_function_call_header
     ::= variable_identifier LEFT_PAREN
