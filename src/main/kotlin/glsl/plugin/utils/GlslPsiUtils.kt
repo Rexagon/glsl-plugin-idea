@@ -21,6 +21,14 @@ object GlslPsiUtils : GeneratedParserUtilBase() {
         return false
     }
 
+    @JvmStatic
+    fun ppText(builder: PsiBuilder, level: Int): Boolean {
+        while (builder.tokenType != GlslTypes.PP_END) {
+            builder.advanceLexer()
+        }
+        return builder.tokenType == GlslTypes.PP_END
+    }
+
     /**
      *
      */

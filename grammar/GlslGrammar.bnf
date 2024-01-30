@@ -1204,7 +1204,7 @@ pp_single_declaration
     ::= variable_identifier expr?
 
 pp_define_function
-    ::= variable_identifier LEFT_PAREN pp_define_params RIGHT_PAREN (expr|declaration)
+    ::= variable_identifier LEFT_PAREN pp_define_params RIGHT_PAREN <<ppText>>
     {   pin=2 }
 
 private pp_define_params
